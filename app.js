@@ -1,9 +1,10 @@
 import createError from "http-errors";
 import express from "express";
 import path from "path";
-import cookieParser from "cookie-parser";
 import logger from "morgan";
 import { fileURLToPath } from "url";
+import passport from "passport";
+import config from './config.js';
 
 import indexRouter from "./routes/index.js";
 import usersRouter from "./routes/users.js";
@@ -13,20 +14,13 @@ import partnerRouter from "./routes/partnerRouter.js";
 
 import mongoose from "mongoose";
 
-import session from "express-session";
-import sessionFileStore from "session-file-store";
-
-import passport from "passport";
-import { local } from './authenticate.js';
-
-var FileStore = sessionFileStore(session);
 
 const __filename = fileURLToPath(import.meta.url);
 
 const __dirname = path.dirname(__filename);
 console.log("directory-name 👉️", __dirname);
 
-const url = "mongodb://localhost:27017/nucampsite";
+const url = config.mongoUrl;
 const connect = mongoose.connect(url, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -50,33 +44,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 //app.use(cookieParser("12345-67890-09876-54321"));
 
-app.use(session({
-  name: 'session-id',
-  secret: '12345-67890-09876-54321',
-  saveUninitialized: false,
-  resave: false,
-  store: new FileStore()
-}));
-
 app.use(passport.initialize());
-app.use(passport.session());
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
-
-function auth(req, res, next) {
-  console.log(req.user);
-
-  if (!req.user) {
-    const err = new Error("You are not authenticated!");
-    err.status = 401;
-    return next(err);
-  } else {
-    return next();
-  }
-}
-
-app.use(auth);
 
 app.use(express.static(path.join(__dirname, "public")));
 
