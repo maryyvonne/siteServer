@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
-import 'mongoose-currency';
 const Schema = mongoose.Schema;
+import * as Currency from 'mongoose-currency';
 // Will add the Currency type to the Mongoose Schema types
-var Currency = mongoose.Types.Currency;
+
 
 const promotionSchema = new Schema(
   {
@@ -20,7 +20,7 @@ const promotionSchema = new Schema(
       default: false,
     },
     cost: {
-      type: Currency,
+      type: mongoose.Types.Currency,
       required: true,
       min: 0,
     },
