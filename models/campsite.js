@@ -1,9 +1,9 @@
-const mongoose = require("mongoose");
-
+import mongoose from "mongoose";
+import mongooseCurrency from 'mongoose-currency';
 const Schema = mongoose.Schema;
 // Will add the Currency type to the Mongoose Schema types
-require("mongoose-currency").loadType(mongoose);
-var Currency = mongoose.Types.Currency;
+var currencyTypes = mongooseCurrency.loadType(mongoose);
+var Currency = mongoose.Types.currencyTypes;
 
 const commentSchema = new Schema(
   {
@@ -27,7 +27,6 @@ const commentSchema = new Schema(
   }
 );
 
-
 const campsiteSchema = new Schema(
   {
     name: {
@@ -48,7 +47,7 @@ const campsiteSchema = new Schema(
       required: true,
     },
     cost: {
-      type: Currency,
+      type: currencyTypes,
       required: true,
       min: 0,
     },
@@ -64,4 +63,4 @@ const campsiteSchema = new Schema(
 );
 
 const Campsite = mongoose.model("Campsite", campsiteSchema);
-module.exports = Campsite;
+export default Campsite;

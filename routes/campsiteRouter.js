@@ -1,5 +1,5 @@
 import express from "express";
-import  Campsite from "../models/campsite.cjs";
+import  Campsite from "../models/campsite.js";
 
 const campsiteRouter = express.Router();
 
