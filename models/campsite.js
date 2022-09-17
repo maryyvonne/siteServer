@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import mongooseCurrency from 'mongoose-currency';
 const Schema = mongoose.Schema;
+const ObjectId = Schema.Types.ObjectId
 // Will add the Currency type to the Mongoose Schema types
 var currencyTypes = mongooseCurrency.loadType(mongoose);
 var Currency = mongoose.Types.currencyTypes;
@@ -18,8 +19,8 @@ const commentSchema = new Schema(
       required: true,
     },
     author: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
+      type: ObjectId,
+      ref: "User",
     },
   },
   {
